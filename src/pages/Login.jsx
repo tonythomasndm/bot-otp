@@ -3,7 +3,7 @@ import React from 'react';
 const Login = () => {
     return (
         <>
-        <p className="bg-green">login</p>
+        <p  className='box'>login</p>
         </>
     );
 };
