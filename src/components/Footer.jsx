@@ -5,9 +5,9 @@ const Footer = () => {
         <>
         <footer class="bg-blue-700">
     <div class="mx-auto max-w-5xl px-4 py-16 sm:px-3 lg:px-4 ">
-        <div class="mx-auto text-center text-white text-2xl font-semibold font-['Montserrat'] tracking-tight"> Contact Us </div>
-        <div class="mx-auto mt-4 max-w-md text-center text-white text-xl font-normal font-['Montserrat'] tracking-tight">abcd@gmail.com</div>
-        <div class="mx-auto mt-4 max-w-md text-center text-white text-xl font-normal font-['Montserrat'] tracking-tight">232-U, Kavi Nagar, New Delhi, Delhi - 1100201</div>
+        <div class="mx-auto text-center text-white text-2xl font-semibold font-Montserrat tracking-tight"> Contact Us </div>
+        <div class="mx-auto mt-4 max-w-md text-center text-white text-xl font-normal font-Montserrat tracking-tight">abcd@gmail.com</div>
+        <div class="mx-auto mt-4 max-w-md text-center text-white text-xl font-normal font-Montserrat tracking-tight">232-U, Kavi Nagar, New Delhi, Delhi - 1100201</div>
         <ul class="mt-4 flex justify-center gap-6 md:gap-8">
       <li>
         <a
@@ -99,9 +99,9 @@ const Footer = () => {
         </a>
       </li>
     </ul>
-        <div class=" mx-auto mt-4 max-w-md text-center text-white text-xl font-normal font-['Montserrat'] tracking-tigh">Privacy Policy | Terms of Use | Payment & Refund </div>
+        <div class=" mx-auto mt-4 max-w-md text-center text-white text-xl font-normal font-Montserrat tracking-tigh">Privacy Policy | Terms of Use | Payment & Refund </div>
         <div class="mt-4 h-px border-2 border-white"></div>
-        <div className="mx-auto mt-4 max-w-md text-center text-white text-2xl font-semibold font-['Montserrat'] tracking-tight">2023 | BotOtp</div>
+        <div className="mx-auto mt-4 max-w-md text-center text-white text-2xl font-semibold font-Montserrat tracking-tight">2023 | BotOtp</div>
     
 
     
