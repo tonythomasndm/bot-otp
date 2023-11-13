@@ -25,6 +25,9 @@
   .input {
     @apply pl-5 text-base leading-normal border outline-none sm:flex-1 max-sm:w-full text-slate-gray max-sm:p-5 sm:border-none max-sm:border-slate-gray max-sm:rounded-full;
   }
+  .card{
+    @apply flex flex-col items-center justify-center flex-1 w-full px-16 py-12 bg-white shadow-lg rounded-3xl;
+  }
 }
 
 @layer utilities {

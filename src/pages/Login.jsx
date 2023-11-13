@@ -21,7 +21,7 @@ const Login = () => {
 
   return (
     <section className="flex flex-row items-center justify-center w-full pt-40 padding-r max-container padding-l wide:padding-r padding-b">
-        <div className="flex flex-col items-center justify-center flex-1 w-full px-16 py-12 bg-white shadow-lg rounded-3xl">
+        <div className="card">
             <h2 className='text-4xl font-[550] tracking-wider text-center'>Login</h2>
             <br />
             <form className='flex flex-col justify-center gap-6'>

@@ -11,9 +11,6 @@ const SignUp = () => {
         // Add your login logic here
         console.log("Logging in with:", username, password);
       };
-    
-
-
 
   return (
     <section className="flex flex-row items-center justify-center w-full pt-40 padding-r max-container padding-l wide:padding-r padding-b">

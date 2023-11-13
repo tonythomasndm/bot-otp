@@ -1,6 +1,9 @@
+import Sidebar from "../components/Sidebar";
 const NumberHistory = () => {
   return (
-    <div>NumberHistory</div>
+    <section className="pt-20">
+      <Sidebar/>  
+    </section>
   )
 }
 

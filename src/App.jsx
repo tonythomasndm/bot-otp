@@ -22,7 +22,7 @@ const App = () => {
 					<Route path='/profile' element={<Profile />} />
 				</Routes>
       </section>
-      <section className="w-full pb-8 bg-blue-600 padding-x padding-t">
+      <section className="absolute z-10 w-full pb-8 bg-blue-600 padding-x padding-t">
         <Footer/>
       </section>
       </Router>

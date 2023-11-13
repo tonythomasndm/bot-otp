@@ -1,6 +1,9 @@
+import Sidebar from "../components/Sidebar";
 const BuyNumber = () => {
   return (
-    <div>BuyNumber</div>
+    <section className="pt-20">
+      <Sidebar/>  
+    </section>
   )
 }
 
