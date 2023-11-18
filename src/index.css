@@ -28,6 +28,9 @@
   .card{
     @apply flex flex-col items-center justify-center flex-1 w-full px-16 py-12 bg-white shadow-lg rounded-3xl;
   }
+  .input-text{
+    @apply w-full p-3 font-[500] border-2 border-gray-400 rounded-lg min-w-[300px] max-w-[400px] font-montserrat
+  }
 }
 
 @layer utilities {
@@ -62,8 +65,6 @@
   .info-text {
     @apply text-lg leading-7 font-montserrat text-slate-gray;
   }
-  .input-text{
-    @apply w-full p-3 font-[500] border-2 border-gray-400 rounded-lg min-w-[300px] max-w-[400px] font-montserrat
-  }
+  
   
 }

@@ -1,5 +1,6 @@
 import { sidebarComponents } from "../constants";
 import { useState } from "react";
+import piggyBank from '../assets/images/piggy-bank-image.svg';
 const Sidebar = () => {
     const [open, setOpen] = useState(false);
   return (
@@ -12,7 +13,7 @@ const Sidebar = () => {
          </button>
             {open && <div 
             className={`top-0 bottom-0 lg:left-0 max-lg: ${open ? 'left-0' : '-left-[300px]'}
-            left-[-300px] p-2 w-[300px] overflow-y-auto text-center bg-background pl-8 max-sm:min-h-screen`}>
+            left-[-300px] p-2 w-[300px] overflow-y-auto text-center bg-background pl-8 pr-8 max-sm:min-h-screen`}>
            
             <ul className='flex flex-col items-start justify-center gap-4 text-xl text-black'>
                 
@@ -28,6 +29,13 @@ const Sidebar = () => {
                 
                 
             </ul>
+            <div className="py-4 mt-10 mb-10 card">
+                
+                <h3 className="font-semibold text-center">Wallet 
+                <img src={piggyBank} alt="" />
+                
+                <br/> Rs 200000</h3>
+            </div>
         </div>}
     </section>
   )

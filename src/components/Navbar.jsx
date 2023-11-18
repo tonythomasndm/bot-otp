@@ -1,5 +1,6 @@
 import headerLogo from '../assets/images/header-logo.png';
 import telegramLogo from '../assets/images/telegram-logo.svg';
+import { telegramLink } from '../constants';
 const Navbar = () => {
   return (
     <header className="absolute z-10 w-full py-4 bg-blue-600 padding-x">
@@ -9,7 +10,7 @@ const Navbar = () => {
                 <h1 className='text-white font-montserrat'>BotOtp</h1>
             </a>
             <div className='flex flex-row justify-end w-full'>
-              <a href="/"><div className='flex flex-row px-3 py-2 mx-4 rounded-lg bg-background'>
+              <a href={telegramLink} target="_blank" ><div className='flex flex-row px-3 py-2 mx-4 rounded-lg bg-background'>
                 <img src={telegramLogo} alt=""  width={36} height={36}
                 className='pr-2 max-sm:pr-0'
                 />

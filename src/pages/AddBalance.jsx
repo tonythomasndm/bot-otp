@@ -2,11 +2,12 @@ import Sidebar from "../components/Sidebar";
 import paymentQrCode from '../assets/images/payment-qr-code.png';
 import Button from '../components/Button';
 import scanQRHero from '../assets/images/scan-qr-hero.svg';
+import { telegramLink } from "../constants";
 const AddBalance = () => {
 
   const openLink = () => {
     // Replace "https://example.com" with the actual link you want to open
-    const linkToOpen = "https://www.google.com/";
+    const linkToOpen = {telegramLink};
     window.open(linkToOpen, "_blank");
   };
 
@@ -17,7 +18,7 @@ const AddBalance = () => {
         <div className="w-full max-w-[580px] gap-8 card">
           <h3 className="text-2xl font-semibold tracking-wide text-center">Payment UPI QR Code</h3>
           <img src={paymentQrCode} alt=" Payment QR Code"  width={250} className=""/>
-          <Button label='Connect on Telegram' handler={openLink}></Button>
+          <a href={telegramLink} target="_blank"><Button label='Connect on Telegram' handler={openLink}></Button></a>
         </div>
         <div className='flex flex-col pl-32 pr-16 max-md:hidden'>
         <img src={scanQRHero} alt="Scan QR Hero Image" className='self-center w-full max-w-md'

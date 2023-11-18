@@ -14,3 +14,19 @@ export const sidebarComponents = [
 </svg>
 ), label: "Add Balance", href: "/add-balance" },
 ];
+
+export const telegramLink="https://t.me/Bototp_Official";
+
+const balance=200000;
+export const details=[
+    {label:"Name",value:"Rahul Bhardwaj"},
+    {label:"Email",value:"rahuul@iiitd.ac.in"},
+    {label:"Balance",value:"Rs"+{balance}},
+];
+
+export const servers=[
+  {label:"Server 1",value:"1"},
+  {label:"Server 2",value:"2"},
+  {label:"Server 3",value:"3"},
+];
+
