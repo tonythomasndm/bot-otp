@@ -30,3 +30,15 @@ export const servers=[
   {label:"Server 3",value:"3"},
 ];
 
+export const services=[
+  {label:"Amazon",icon:"2"},
+  {label:"Instagram",icon:"2"},
+  {label:"WhatsApp",icon:"@"},
+];
+
+export const tableContents=[
+  {ID:"988998",Date:"23/12/2023",Service:"Amazon",Price:"Rs 200",Number:"1234567890",Status:"Success",Code:"123456"},
+  {ID:"988998",Date:"23/12/2023",Service:"Amazon",Price:"Rs 200",Number:"1234567890",Status:"Success",Code:"123456"},
+  {ID:"988998",Date:"23/12/2023",Service:"Amazon",Price:"Rs 200",Number:"1234567890",Status:"Success",Code:"123456"},
+  {ID:"988998",Date:"23/12/2023",Service:"Amazon",Price:"Rs 200",Number:"1234567890",Status:"Success",Code:"123456"},
+]

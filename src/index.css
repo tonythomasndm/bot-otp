@@ -12,6 +12,18 @@
   scroll-behavior: smooth;
   font-family: montserrat, sans-serif;
 }
+th, td {
+  border: 2px solid #000000;
+  text-align: left;
+  padding: 8px;
+  flex: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+th {
+  background-color: primary;
+}
 
 @layer components {
   .max-container {
