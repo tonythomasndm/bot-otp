@@ -2,52 +2,84 @@ import signUpImg from '../assets/images/hero-login-signup-page.svg';
 import googleIcon from '../assets/icons/google-icon.svg';
 import { useState } from "react";
 import Button from '../components/Button';
+import Validation from './SignupValidation';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+useNavigate
 const SignUp = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const handleSignUp = () => {
-        // Add your login logic here
-        console.log("Logging in with:", username, password);
-      };
+  const [values, setValues]=useState({
+    name :'',
+    email:'',
+    password:'',
+    confirmPassword:''
+
+})
+const navigate = useNavigate();
+    const [errors, setErrors] =useState({})
+    const handleInput = (event) =>{
+        setValues(prev=> ({...prev, [event.target.name]: event.target.value}))
+    }
+    const handleSubmit=(event)=>{
+        event.preventDefault();
+        setErrors(Validation(values));
+        if (errors.name ==="" && errors.email ==="" && errors.password ===""){
+            axios.post('http://localhost:8081/signup', values)
+            .then(res => navigate('/login'))
+            .catch(err => console.log(err))
+        }
+      }
+    // const handleSignUp = () => {
+    //     // Add your login logic here
+    //     console.log("Logging in with:", username, password);
+    //   };
 
   return (
     <section className="flex flex-row items-center justify-center w-full pt-40 padding-r max-container padding-l wide:padding-r padding-b">
         <div className="flex flex-col items-center justify-center flex-1 w-full px-16 py-12 bg-white shadow-lg rounded-3xl">
             <h2 className='text-4xl font-[550] tracking-wider text-center'>Sign Up</h2>
             <br />
-            <form className='flex flex-col justify-center gap-6'>
+            <form className='flex flex-col justify-center gap-6' onSubmit={handleSubmit}>
+              <div>
                 <input
                     type="text"
-                    placeholder='Enter username'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder='Enter name'
+                    name='name'
+                    onChange={handleInput}
                     className="input-text"
                 />
-                  <input
+                {errors.name && <span className='text-danger'>{errors.name}</span>}
+                </div>
+                <div>
+                <input
                 type="email"
                 placeholder='Enter your email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name='email'
+                onChange={handleInput}
                 className='input-text'
-            />
-
-                    <input
-                        type="password"
-                        placeholder='Enter password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className='input-text'
-                    />
-                    <input
-                        type="password"
-                        placeholder='Confirm password'
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        className='input-text'
-                    />
-        <Button label='Sign Up' handler={handleSignUp}/>
+                />
+                {errors.email && <span className='text-danger'>{errors.email}</span>}
+              </div>
+              <div>
+                <input
+                type="password"
+                placeholder='Enter your password'
+                name='password'
+                onChange={handleInput}
+                className='input-text'
+                />
+                {errors.password && <span className='text-danger'>{errors.password}</span>}
+              </div>
+              <div>
+                <input
+                type="password"
+                placeholder='Confirm password'
+                name='confirmPassword'
+                onChange={handleInput}
+                className='input-text'
+                />
+                {errors.confirmPassword && <span className='text-danger'>{errors.confirmPassword}</span>}
+              </div>
+        <Button className='btn-success' label='Sign Up'/>
       </form>
       
       <p className='p-3 font-semibold text-slate-gray'>Already have account ? <a href="/login" ><span className='text-primary'>Log In</span></a></p>

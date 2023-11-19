@@ -1,16 +1,58 @@
 import loginImg from '../assets/images/hero-login-signup-page.svg';
 import googleIcon from '../assets/icons/google-icon.svg';
-import { useState } from "react";
+import React, { useState } from "react";
 import Button from '../components/Button';
+import { Link, useNavigate } from 'react-router-dom';
+import Validation from './LoginValidation';
+import axios from 'axios';
+import Cookies from "js-cookie";
+import { useContext } from 'react';
+import { UserContext } from "../components/UserContext"
+
 const Login = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [values, setValues]= useState({
+      email:'',
+      password:''
+    })
     const [forgetPassword, setForgetPassword] = useState(false);
     const [email, setEmail] = useState("");
-    const handleLogin = () => {
-        // Add your login logic here
-        console.log("Logging in with:", username, password);
+    const navigate = useNavigate();
+    const [errors, setErrors] =useState({})
+    const handleInput = (event) =>{
+        setValues(prev=> ({...prev, [event.target.name]: event.target.value}))
+    }
+
+    const {user, setUser} = useContext(UserContext);
+    
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setErrors(Validation(values));
+      
+        if (!errors.email && !errors.password) {
+          try {
+            const res = await axios.post('http://localhost:8081/login', values);
+      
+            // Check if the response status is 200
+            if (res.status === 200) {
+              const token = res.data.token;
+              Cookies.set("serv_auth", token);
+              setUser({ loggedIn: true, email: values.email, balance: res.data.balance });
+      
+              navigate('/profile');
+            } else {
+              alert("Unexpected response status: " + res.status);
+            }
+          } catch (err) {
+            // Handle other errors
+            if (err.response && err.response.status === 401) {
+              alert("Invalid email or password");
+            } else {
+              console.error("Unexpected error:", err);
+            }
+          }
+        }
       };
+      
     const sendPwd = () => {
         setForgetPassword(false);
         // Add your login logic here
@@ -24,22 +66,29 @@ const Login = () => {
         <div className="card">
             <h2 className='text-4xl font-[550] tracking-wider text-center'>Login</h2>
             <br />
-            <form className='flex flex-col justify-center gap-6'>
+            <form className='flex flex-col justify-center gap-6' onSubmit={handleSubmit}>
+              <div>
+              {/* <label htmlFor="email"></label> */}
                 <input
-                    type="text"
-                    placeholder='Enter username'
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="input-text"
+                    type="email"
+                    placeholder='Enter email'
+                    name='email'
+                    onChange={handleInput}
+                    // className="input-text"
                 />
+                {errors.email && <span className='text-danger'>{errors.email}</span>}
+                </div>
+                <div>
                     <input
                         type="password"
                         placeholder='Enter password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className='input-text'
+                        name='password'
+                        onChange={handleInput}
+                        // className='input-text'
                     />
-        <Button label='Login' handler={handleLogin}/>
+                    {errors.password && <span className='text-danger'>{errors.password}</span>}
+                </div>
+        <Button type ='submit' className='btn-success' label='Login'/>
       </form>
       <button onClick={()=>{setForgetPassword(true)}} className='p-3 font-semibold text-slate-gray'>Forget Password</button>
       {
@@ -56,7 +105,7 @@ const Login = () => {
         </form>
         )
       }
-      <p className='p-3 font-semibold text-slate-gray'>Don't have account ? <a href="/signup" ><span className='text-primary'>Sign Up</span></a></p>
+      <p className='p-3 font-semibold text-slate-gray'>Don't have account ? <Link to="/signup"> <span className='text-primary'>Sign Up</span></Link></p>
 
       <button className='py-1.5 font-semibold bg-transparent border-2 button border-primary text-slate-gray mt-2'><img src={googleIcon} alt="Google Logo" />Sign in with Google</button>
 
