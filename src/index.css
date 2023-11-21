@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Palanquin:wght@100;200;300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Palanquin:wght@100;200;300;400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: montserrat, sans-serif;
+}
+th, td {
+  border: 2px solid #000000;
+  text-align: left;
+  padding: 8px;
+  flex: auto;
+  justify-content: center;
+  align-items: center;
+}
+
+th {
+  background-color: primary;
+}
+
+@layer components {
+  .max-container {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  .button{
+    @apply flex items-center justify-center gap-2 w-full py-4 text-lg leading-none font-[500]  rounded-xl px-7 min-w-[300px] max-w-[400px] font-montserrat bg-[#0D51D5] text-white
+  }
+
+  .input {
+    @apply pl-5 text-base leading-normal border outline-none sm:flex-1 max-sm:w-full text-slate-gray max-sm:p-5 sm:border-none max-sm:border-slate-gray max-sm:rounded-full;
+  }
+  .card{
+    @apply flex flex-col items-center justify-center flex-1 w-full px-16 py-12 bg-white shadow-lg rounded-3xl;
+  }
+  .input-text{
+    @apply w-full p-3 font-[500] border-2 border-gray-400 rounded-lg min-w-[300px] max-w-[400px] font-montserrat
+  }
+}
+
+@layer utilities {
+  .padding {
+    @apply px-8 py-12 sm:px-16 sm:py-24;
+  }
+
+  .padding-x {
+    @apply px-8 sm:px-16;
+  }
+
+  .padding-y {
+    @apply py-12 sm:py-24;
+  }
+
+  .padding-l {
+    @apply pl-12 sm:pl-24;
+  }
+
+  .padding-r {
+    @apply pr-8 sm:pr-16;
+  }
+
+  .padding-t {
+    @apply pt-12 sm:pt-24;
+  }
+
+  .padding-b {
+    @apply pb-12 sm:pb-24;
+  }
+
+  .info-text {
+    @apply text-lg leading-7 font-montserrat text-slate-gray;
+  }
+  
+  
+}
