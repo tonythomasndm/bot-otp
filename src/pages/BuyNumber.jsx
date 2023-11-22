@@ -9,20 +9,13 @@ import Button from "../components/Button";
 //Need to work on responsiveness
 const BuyNumber = () => {
   const [selectedServer, setSelectedServer] = useState(0);
-  const [phoneNumber, setPhoneNumber] = useState(0);
+  const [phoneNumber, setPhoneNumber] = useState(null);
   const [message, setMessage] = useState("There is no message yet");
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState('');
   const [serverEndpoint,setServerEndpoint]  = useState("");
   const [numberId, setNumberId] = useState(null);
 
-  const nextSMS = () => {
-  }
-
-  const cancelOptions = () => {
-    setSelectedServer(0);
-    setSelectedService(0);
-  }
 
   const handleServerClick = async (server) => {
     // setSelectedServer(value);
@@ -103,6 +96,48 @@ const BuyNumber = () => {
     }
   };
 
+  const cancelOptions = async (serverEndpoint, numberId) => {
+    const cancelEndpoint = `${serverEndpoint}&action=setStatus&id=${numberId}&status=8`;
+
+    try {
+      // Make an API call to set the status to 8 (or the appropriate status code)
+      const response = await fetch(cancelEndpoint);
+      const data = await response.text(); // Assume the response is text
+
+      // Placeholder for any logic based on the cancellation response
+      console.log('Cancellation response:', data);
+    } catch (error) {
+      console.error('Error cancelling:', error);
+    }
+
+    // Additional logic if needed after cancelling
+    // For example, clearing state, redirecting, etc.
+    setNumberId(null);
+    setPhoneNumber(null);
+    setSelectedServer(0);
+    setSelectedService(0);
+    setMessage('Cancelled successfully');
+  };
+
+  const nextSMS = async (serverEndpoint, numberId) => {
+    const nextSmsEndpoint = `${serverEndpoint}&action=setStatus&id=${numberId}&status=3`;
+
+    try {
+      // Make an API call to set the status to 3 (or the appropriate status code)
+      const response = await fetch(nextSmsEndpoint);
+      const data = await response.text(); // Assume the response is text
+
+      // Placeholder for any logic based on the next SMS response
+      console.log('Next SMS response:', data);
+    } catch (error) {
+      console.error('Error processing next SMS:', error);
+    }
+
+    // Additional logic if needed after processing next SMS
+    // For example, updating state, triggering additional actions, etc.
+    setMessage('Processing next SMS');
+  };
+
   return (
     <section className="flex flex-row pt-24">
       <Sidebar/>
@@ -148,7 +183,7 @@ const BuyNumber = () => {
         </div>
         <div className="flex flex-row gap-6 max-sm:flex-col">
         <Button label="Buy a Number" onClick={() => {getNumber(serverEndpoint,selectedService)}}></Button>
-        <button className="text-black bg-transparent border-2 button border-primary" onClick={cancelOptions}>Cancel</button>
+        <Button className="text-black bg-transparent border-2 button border-primary" onClick={cancelOptions}>Cancel</Button>
         </div>
         <div className="w-full gap-6">
             <h3 className="text-2xl font-semibold tracking-wide text-left">3. Phone Number</h3>

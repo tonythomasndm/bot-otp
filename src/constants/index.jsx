@@ -18,6 +18,7 @@ export const sidebarComponents = [
 export const telegramLink="https://t.me/Bototp_Official";
 
 const balance=200000;
+
 export const details=[
     {label:"Name",value:"Rahul Bhardwaj"},
     {label:"Email",value:"rahuul@iiitd.ac.in"},
