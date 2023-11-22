@@ -12,13 +12,7 @@ dotenv.config({path: './.env'});
 const app=express();
 app.use(cors());
 app.use(express.json());
-// app.use(
-//     session({
-//       secret: "myRandomSecretKey123", // Add a secret key for session data
-//       resave: false,
-//       saveUninitialized: true,
-//     })
-//   );
+
 
 const db = mysql.createPool({
     connectionLimit: 500, // Adjust as needed
@@ -28,13 +22,7 @@ const db = mysql.createPool({
     database: process.env.DATABASE,
   });
 
-// db.connect((error) => {
-//     if (error) {
-//         console.log(error)
-//     } else{
-//         console.log("MYSQL connected")
-//     }
-// })
+
 
 const PORT = 8081;
 
@@ -128,6 +116,48 @@ app.get('/balance', (req, res) => {
         }
     })
 });
+
+app.get('/services1', (req, res) => {
+  // Fetch services from the database
+  const query = 'SELECT * FROM ci_services1';
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching services:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+app.get('/services2', (req, res) => {
+    // Fetch services from the database
+    const query = 'SELECT * FROM ci_services2';
+  
+    db.query(query, (error, results) => {
+      if (error) {
+        console.error('Error fetching services:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        res.json(results);
+      }
+    });
+  });
+
+  app.get('/services3', (req, res) => {
+    // Fetch services from the database
+    const query = 'SELECT * FROM ci_services3';
+  
+    db.query(query, (error, results) => {
+      if (error) {
+        console.error('Error fetching services:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        res.json(results);
+      }
+    });
+  });
 
 
 app.get('/', (req, res) => {

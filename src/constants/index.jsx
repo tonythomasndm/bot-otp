@@ -25,10 +25,15 @@ export const details=[
 ];
 
 export const servers=[
-  {label:"Server 1",value:"1"},
-  {label:"Server 2",value:"2"},
-  {label:"Server 3",value:"3"},
+  {label:"Server 1",value:"1", apiEndpoint: 'https://fastsms.su/stubs/handler_api.php?api_key=4f1066ef060b4cf3f20de05d1816ef7d'},
+  {label:"Server 2",value:"2", apiEndpoint: 'https://tiger-sms.com/stubs/handler_api.php?api_key=CfoFDWTaCpX9yaqH5NST9CF23RwYuNic'},
+  {label:"Server 3",value:"3", apiEndpoint: 'http://www.phantomunion.com:10023/pickCode-api/push/ticket?key=cf45b0839bc3ebab4eb92931a1b9e9c1'},
 ];
+
+export const getApiEndpoint = (serverValue) => {
+  const server = servers.find((s) => s.value === serverValue);
+  return server ? server.apiEndpoint : null;
+}
 
 export const services=[
   {label:"Amazon",icon:"2"},

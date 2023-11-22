@@ -3,6 +3,8 @@ import Button from '../components/Button';
 import { details } from "../constants";
 import { useState } from "react";
 import { list } from "postcss";
+import BalanceComponent from "./Balance";
+
 const Profile = () => {
 
   const [password, setPassword] = useState("");
@@ -51,6 +53,7 @@ const Profile = () => {
           </div>
         </div>
       </section>
+      <BalanceComponent/>
     </section>
   )
 }
