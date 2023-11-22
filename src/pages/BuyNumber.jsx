@@ -1,5 +1,5 @@
 import Sidebar from "../components/Sidebar";
-import { getApiEndpoint, servers,services } from "../constants";
+import {servers,services } from "../constants";
 import serverIcon from "../assets/icons/server-icon.svg";
 import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
@@ -9,7 +9,7 @@ import Button from "../components/Button";
 //Need to work on responsiveness
 const BuyNumber = () => {
   const [selectedServer, setSelectedServer] = useState(0);
-  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState("+919265273954");
   const [message, setMessage] = useState("There is no message yet");
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState('');
@@ -20,6 +20,7 @@ const BuyNumber = () => {
   const handleServerClick = async (server) => {
     // setSelectedServer(value);
     console.log(server);
+    console.log(server.apiEndpoint);
   
     try {
       // Find the selected server by value
@@ -46,7 +47,8 @@ const BuyNumber = () => {
     console.log('Selected Service Code:', serviceCode);
   };
 
-  const getNumber = async(serverEndpoint,selectedService) => {
+  const getNumber = async() => {
+    console.log('Helo');
     console.log(serverEndpoint);
     const apiEndpoint = `${serverEndpoint}&action=getNumber&service=${selectedService}&country=22`;
     console.log({apiEndpoint});
@@ -61,9 +63,8 @@ const BuyNumber = () => {
       // Update the state with the obtained phone number
       setNumberId(extractedNumberId);
       setPhoneNumber(extractedPhoneNumber);
-  
       // Start fetching status recursively
-      getStatus(serverEndpoint, numberId);
+      
     } catch (error) {
       console.error('Error fetching number:', error);
   
@@ -72,21 +73,42 @@ const BuyNumber = () => {
     }
     
   };
+
+  useEffect(() => {
+    // action on update
+   console.log(numberId)
+   if (numberId !==null){
+      getStatus(serverEndpoint,numberId);
+   }
+   
+}, [numberId]);
+  
   
   const getStatus = async (serverEndpoint, numberId) => {
-    const statusEndpoint = `${serverEndpoint}&action=getStatus&id=${numberId}`;
+    
+    const statusEndpoint = `${serverEndpoint}&action=getStatus&id=${numberId}`; 
+    console.log("getting message");
+    console.log(numberId);
 
     try {
       // Make an API call to get the status
       const response = await fetch(statusEndpoint);
-      const data = await response.text(); // Assume the response is text
+      var data = await response.text(); // Assume the response is text
 
       // Update the state with the obtained status
-      setMessage(data);
+      if (data !="STATUS_WAIT_CODE" && data!="STATUS_CANCEL" ){
+
+          data = data.split(":")[1]
+          setMessage(data);
+          clearTimeout();
+      }
+      setMessage(data);      
 
       // Fetch status again after 2 seconds
       setTimeout(() => {
+        
         getStatus(serverEndpoint, numberId);
+
       }, 2000);
     } catch (error) {
       console.error('Error fetching status:', error);
@@ -113,7 +135,7 @@ const BuyNumber = () => {
     // Additional logic if needed after cancelling
     // For example, clearing state, redirecting, etc.
     setNumberId(null);
-    setPhoneNumber(null);
+    setPhoneNumber("+919265273954");
     setSelectedServer(0);
     setSelectedService(0);
     setMessage('Cancelled successfully');
@@ -126,6 +148,7 @@ const BuyNumber = () => {
       // Make an API call to set the status to 3 (or the appropriate status code)
       const response = await fetch(nextSmsEndpoint);
       const data = await response.text(); // Assume the response is text
+      getStatus(serverEndpoint,numberId);
 
       // Placeholder for any logic based on the next SMS response
       console.log('Next SMS response:', data);
@@ -182,8 +205,8 @@ const BuyNumber = () => {
             </ul>
         </div>
         <div className="flex flex-row gap-6 max-sm:flex-col">
-        <Button label="Buy a Number" onClick={() => {getNumber(serverEndpoint,selectedService)}}></Button>
-        <Button className="text-black bg-transparent border-2 button border-primary" onClick={cancelOptions}>Cancel</Button>
+        <button label="Buy a Number" className="text-black bg-transparent border-2 button border-primary" onClick={() => {getNumber()}}>Buy a number</button>
+        <button label="cancel" className="text-black bg-transparent border-2 button border-primary" onClick={() => {cancelOptions()}}>Cancel</button>
         </div>
         <div className="w-full gap-6">
             <h3 className="text-2xl font-semibold tracking-wide text-left">3. Phone Number</h3>
@@ -194,7 +217,8 @@ const BuyNumber = () => {
             <div className="py-4 text-left text-black bg-blue-100 mt-9 flex items-start justify-start text-lg leading-none rounded-xl min-w-[700px] max-sm:min-w-[300px] w-full min-h-[300px] px-7 font-[500]">{message}</div>
         </div>
         <div className="flex flex-row gap-6">
-        <Button label="Next SMS" handler={nextSMS}></Button>
+        <button label="Buy a Number" className="text-black bg-transparent border-2 button border-primary" onClick={() => {getSMS()}}>Buy a number</button>
+        <button label="Next SMS" className="text-black bg-transparent border-2 button border-primary" onClick={()=> nextSMS()}>Next SMS</button>
         
         </div>
 
