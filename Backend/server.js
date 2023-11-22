@@ -208,6 +208,48 @@ app.get("/get-history", (req, res) => {
     })
 })
 
+app.get('/services1', (req, res) => {
+    // Fetch services from the database
+    const query = 'SELECT * FROM ci_services1';
+  
+    db.query(query, (error, results) => {
+      if (error) {
+        console.error('Error fetching services:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        res.json(results);
+      }
+    });
+  });
+  
+  app.get('/services2', (req, res) => {
+      // Fetch services from the database
+      const query = 'SELECT * FROM ci_services2';
+    
+      db.query(query, (error, results) => {
+        if (error) {
+          console.error('Error fetching services:', error);
+          res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+          res.json(results);
+        }
+      });
+    });
+  
+    app.get('/services3', (req, res) => {
+      // Fetch services from the database
+      const query = 'SELECT * FROM ci_services3';
+    
+      db.query(query, (error, results) => {
+        if (error) {
+          console.error('Error fetching services:', error);
+          res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+          res.json(results);
+        }
+      });
+    });
+
 
 app.get('/', (req, res) => {
     return res.json("Connected to server")
