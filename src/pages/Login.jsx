@@ -37,7 +37,7 @@ const Login = () => {
               const token = res.data.token;
               Cookies.set("serv_auth", token);
               Cookies.set("auth", values.email);
-              setUser({ loggedIn: true, email: values.email, balance: res.data.balance });
+              setUser({ loggedIn: true, email: values.email, balance: res.data.balance, name: res.data.name});
       
               navigate('/profile');
             } else {
@@ -116,7 +116,7 @@ const Login = () => {
             />
             <div className='flex flex-col justify-center flex-1'>
             <h3 className='text-2xl font-semibold text-left'>Receive SMS online</h3>
-            <p className='font-md'>Register on social networks, marketplaces, exchanges and online services without spam and disclosure of personal data</p>
+            <p className='font-md'>Register on social networks, marketplaces, exchanges and online services without spam and disclosure of personal data</p>
             </div>
         </div>
     </section>

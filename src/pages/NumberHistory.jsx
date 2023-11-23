@@ -2,12 +2,31 @@ import Sidebar from "../components/Sidebar";
 import { tableContents } from "../constants";
 import Button from "../components/Button";
 import { useState } from "react";
+import axios from "axios";
+import { useContext } from 'react';
+import { UserContext } from "../components/UserContext"
+import Cookies from "js-cookie";
 const NumberHistory = () => {
 
   const [feedbackMessage, setFeedbackMessage] = useState("There is no message yet");
+  const {user, setUser} = useContext(UserContext);
 
-  const enterFeedback = () => {
+  const enterFeedback = async() => {
+
+    const values = {
+      email: user.email,
+      feedback: feedbackMessage
+    }
+      const res = await axios.post(`http://localhost:8081/feedback?access_token=${Cookies.get("serv_auth")}`, values)
+
+      if(res.status === 200){
+        console.log("Feedback sent Successfully")
+      }
+      else{
+        console.log("Internal Server Error")
+      }
   }
+
   return (
     <section className="flex flex-row pt-24">
     <Sidebar/>
@@ -48,10 +67,8 @@ const NumberHistory = () => {
       </div>
       <div className="w-full gap-6">
             <h3 className="text-2xl font-semibold tracking-wide text-left">Submit Feedback</h3>
-            <form action="">
               <textarea className="py-4 text-left text-black bg-blue-100 mt-9 flex items-start justify-start text-lg leading-none rounded-xl min-w-[700px] max-sm:min-w-[300px] w-full min-h-[300px] px-7 font-[500]" placeholder="Enter your feedback here" onChange={(e)=>setFeedbackMessage(e.target.value)}></textarea>
-              <button className="mt-6 button" onSubmit={enterFeedback}>Submit Feedback</button>
-            </form>
+              <button className="mt-6 button" onClick={() => {enterFeedback()}}>Submit Feedback</button>
         </div>
       </div>
     </section>

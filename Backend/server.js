@@ -100,7 +100,7 @@ app.post('/login', (req,res)=>{
                 process.env.JWT
             );
             
-            return res.status(200).json({token})
+            return res.status(200).json({token, "balance": result.balance, "name": result.Name})
           } 
           else {  
             return res.status(401).json("Unauthorized");
@@ -199,14 +199,14 @@ app.post('/feedback', (req, res) => {
                     return res.status(500).json({ error: 'Internal Server Error' });
                 }
                 else{
-                    return res.status(200).json(result);
+                    return res.status(200).json("Success");
                 }
             });
         }
         else{
             return res.status(401).json("Unauthorized");
-        }
-    })
+        }
+    })
 })
 
 app.get("/get-history", (req, res) => {

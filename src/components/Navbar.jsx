@@ -2,10 +2,11 @@ import headerLogo from '../assets/images/header-logo.png';
 import telegramLogo from '../assets/images/telegram-logo.svg';
 import { telegramLink } from '../constants';
 import Cookies from "js-cookie";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from "../components/UserContext"
 import React, { useEffect, useState } from "react";
+import axios from 'axios';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -20,12 +21,30 @@ const Navbar = () => {
 }
 
 useEffect(() => {
-  if(Cookies.get("auth") != undefined && Cookies.get("serv_auth") != undefined){
-    setUser({loggedIn: true, email: Cookies.get("auth"), balance: 0 })
+
+  const fun = async() => {
+  if(user.loggedIn == false && Cookies.get("auth") != undefined && Cookies.get("serv_auth") != undefined){
+
+    const values = {
+      email: Cookies.get("auth"),
+    }
+      const res = await axios.post(`http://localhost:8081/balance?access_token=${Cookies.get("serv_auth")}`, values)
+
+      if(res.status === 200){
+        setUser({loggedIn: true, email: Cookies.get("auth"), balance: res.data.balance })
+      }
+      else{
+        navigate('/login')
+      }
+    
   }
   else{
     navigate('/login')
   }
+
+}
+
+  fun()
 }, [])
   return (
     <header className="absolute z-10 w-full py-4 bg-blue-600 padding-x">

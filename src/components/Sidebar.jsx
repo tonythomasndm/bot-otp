@@ -7,29 +7,8 @@ import Cookies from "js-cookie";
 import axios from 'axios';
 
 const Sidebar = () => {
-    const [open, setOpen] = useState(false);
-    const [balance,setBalance]=useState(0)
-    const {user, setUser} = useContext(UserContext);
-    console.log(user);
-    useEffect(() => {
-    // action on update
-    const fetchData = async () => {
-      try {
-        const values = {email: Cookies.get("auth")}
-        const res = await axios.post(`http://localhost:8081/balance?access_token=${Cookies.get("serv_auth")}`, values);
-
-        if (res.status === 200){
-            setBalance(res.data.balance)
-            user.balance = res.data.balance;
-            setUser(user);
-        }
-      } catch (error) {
-        console.error('Error fetching balance:', error);
-      }
-    };
-  
-    fetchData();
-  }, []);
+const [open, setOpen] = useState(false);
+const {user, setUser} = useContext(UserContext);
   return (
     <section className="flex flex-col w-min max-sm:absolute"> 
         
@@ -61,7 +40,7 @@ const Sidebar = () => {
                 <h3 className="font-semibold text-center">Wallet 
                 <img src={piggyBank} alt="" />
                 
-                <br/>{balance}</h3>
+                <br/>{user.balance}</h3>
                 
             </div>
         </div>}
