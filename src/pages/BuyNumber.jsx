@@ -15,18 +15,22 @@ const BuyNumber = () => {
   const [selectedService, setSelectedService] = useState('');
   const [serverEndpoint,setServerEndpoint]  = useState("");
   const [numberId, setNumberId] = useState(null);
+  const [phantomToken, setPhantomToken]= useState(null)
 
 
   const handleServerClick = async (server) => {
-    // setSelectedServer(value);
+    // setSelectedServer(server.value);
     console.log(server);
     console.log(server.apiEndpoint);
+    
+
   
     try {
       // Find the selected server by value
       setServerEndpoint(server.apiEndpoint);
       console.log(serverEndpoint);
       console.log('HYY') 
+      console.log(selectedServer);
       try {
         const response = await fetch(`http://localhost:8081/services${server.value}`);
         const data = await response.json();
@@ -50,15 +54,31 @@ const BuyNumber = () => {
   const getNumber = async() => {
     console.log('Helo');
     console.log(serverEndpoint);
-    const apiEndpoint = `${serverEndpoint}&action=getNumber&service=${selectedService}&country=22`;
+    var apiEndpoint='';
+
+    
+    apiEndpoint = `${serverEndpoint}&action=getNumber&service=${selectedService}&country=22`;
+    
+
+    
     console.log({apiEndpoint});
     try {
       // Make an API call to get the number
       const response = await fetch(apiEndpoint);
       const data = await response.text(); // Assume the response is text
+      var extractedNumberId = "";
+      var extractedPhoneNumber = "";
+
+      if (selectedServer===3){
+        const parsedData = JSON.parse(data);
+        [extractedNumberId, extractedPhoneNumber] = [parsedData.data.phoneNumber[0].serialNumber,parsedData.data.phoneNumber[0].number]
+        console.log(extractedNumberId);
+        console.log(extractedPhoneNumber);
+        
+      }
   
       // Extract parts from the response
-      const [extractedNumberId, extractedPhoneNumber] = data.split(':').slice(1)
+      [extractedNumberId, extractedPhoneNumber] = data.split(':').slice(1)
   
       // Update the state with the obtained phone number
       setNumberId(extractedNumberId);
