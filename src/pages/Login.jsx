@@ -36,6 +36,7 @@ const Login = () => {
             if (res.status === 200) {
               const token = res.data.token;
               Cookies.set("serv_auth", token);
+              Cookies.set("auth", values.email);
               setUser({ loggedIn: true, email: values.email, balance: res.data.balance });
       
               navigate('/profile');

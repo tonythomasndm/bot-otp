@@ -1,8 +1,35 @@
 import { sidebarComponents } from "../constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import piggyBank from '../assets/images/piggy-bank-image.svg';
+import { useContext } from 'react';
+import { UserContext } from "../components/UserContext"
+import Cookies from "js-cookie";
+import axios from 'axios';
+
 const Sidebar = () => {
     const [open, setOpen] = useState(false);
+    const [balance,setBalance]=useState(0)
+    const {user, setUser} = useContext(UserContext);
+    console.log(user);
+    useEffect(() => {
+    // action on update
+    const fetchData = async () => {
+      try {
+        const values = {email: Cookies.get("auth")}
+        const res = await axios.post(`http://localhost:8081/balance?access_token=${Cookies.get("serv_auth")}`, values);
+
+        if (res.status === 200){
+            setBalance(res.data.balance)
+            user.balance = res.data.balance;
+            setUser(user);
+        }
+      } catch (error) {
+        console.error('Error fetching balance:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
   return (
     <section className="flex flex-col w-min max-sm:absolute"> 
         
@@ -34,7 +61,8 @@ const Sidebar = () => {
                 <h3 className="font-semibold text-center">Wallet 
                 <img src={piggyBank} alt="" />
                 
-                <br/> Rs 200000</h3>
+                <br/>{balance}</h3>
+                
             </div>
         </div>}
     </section>
@@ -42,4 +70,3 @@ const Sidebar = () => {
 }
 
 export default Sidebar;
-

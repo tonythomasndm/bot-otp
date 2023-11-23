@@ -1,7 +1,32 @@
 import headerLogo from '../assets/images/header-logo.png';
 import telegramLogo from '../assets/images/telegram-logo.svg';
 import { telegramLink } from '../constants';
+import Cookies from "js-cookie";
+import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { UserContext } from "../components/UserContext"
+import React, { useEffect, useState } from "react";
+
 const Navbar = () => {
+  const navigate = useNavigate();
+  const {user, setUser} = useContext(UserContext);
+  console.log(user);
+
+  const logout = () => {
+    Cookies.remove("serv_auth");
+    Cookies.remove("auth");
+    setUser({loggedIn: false, email: '', balance: 0 })
+    window.location.reload()
+}
+
+useEffect(() => {
+  if(Cookies.get("auth") != undefined && Cookies.get("serv_auth") != undefined){
+    setUser({loggedIn: true, email: Cookies.get("auth"), balance: 0 })
+  }
+  else{
+    navigate('/login')
+  }
+}, [])
   return (
     <header className="absolute z-10 w-full py-4 bg-blue-600 padding-x">
         <nav className='flex items-center justify-start max-container '>
@@ -17,7 +42,8 @@ const Navbar = () => {
                 <span className='max-sm:hidden'>Connect on Telegram</span>
               </div></a>
               <div>
-                <button className='px-3 py-2 text-black rounded-full bg-background'>Log In</button>
+                {user.email == "" ? <button className='px-3 py-2 text-black rounded-full bg-background' onClick={() => {navigate('/login')}}>Log In</button> : <button className='px-3 py-2 text-black rounded-full bg-background' onClick={() => {logout()}}>Log Out</button>}
+                
               </div>
             </div>
         </nav>

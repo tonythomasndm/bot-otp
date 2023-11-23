@@ -1,17 +1,57 @@
 import Sidebar from "../components/Sidebar";
 import Button from '../components/Button';
-import { details } from "../constants";
+// import { details } from "../constants";
 import { useState } from "react";
 import { list } from "postcss";
+import Cookies from "js-cookie";
+import { useContext } from 'react';
+import { UserContext } from "../components/UserContext"
+
 const Profile = () => {
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  
+  const {user, setUser} = useContext(UserContext);
+  const details=[
+    {label:"Name",value: user.name},
+    {label:"Email",value: user.email},
+    {label:"Balance",value: user.balance},
+];
 
+  const handleChangePassword = async () => {
+    try {
+      //validation for password and confirmPassword 
 
-  const handleChangePassword = () => {
-    //handle here
+      if (password !== confirmPassword) {
+      alert("Password and Confirm Password must match.");
+      return;
+    }
+
+      const response = await fetch(`http://localhost:8081/change-pass?access_token=${Cookies.get("serv_auth")}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: user.email,
+          password: password,
+        }),
+      });
+
+      if (response.ok) {
+        alert('Password changed successfully');
+        // Handle success (redirect, show a success message, etc.)
+      } else {
+        alert('Failed to change password:', response.status, response.statusText);
+        // Handle error (show an error message, etc.)
+      }
+    } catch (error) {
+      console.error('Error changing password:', error.message);
+    }
   };
+
+
   return (
     <section className="flex flex-row pt-24 ">
       <Sidebar/>
@@ -45,7 +85,7 @@ const Profile = () => {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         className='min-w-[700px] max-md:min-w-fit input-text'
                     />
-        <Button label='Change Password' handler={handleChangePassword}/>
+        <button label='Change Password' className="text-black bg-transparent border-2 button border-primary" onClick={() => handleChangePassword()}>Change Password</button>
       </form>
           
           </div>

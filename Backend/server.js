@@ -74,8 +74,8 @@ app.post('/signup', (req,res)=>{
 
 app.post('/login', (req,res)=>{
     const {email, password } = req.body;
-    // const sql = "SELECT * FROM ci_users WHERE `email` = ? AND `password` = ?";
-    const sql = "SELECT * FROM ci_users WHERE `email` = ?";
+    // const sql = "SELECT * FROM ci_users WHERE email = ? AND password = ?";
+    const sql = "SELECT * FROM ci_users WHERE email = ?";
     const values = [email, password];
 
     db.query(sql, values, async(err, result) => {
@@ -95,11 +95,12 @@ app.post('/login', (req,res)=>{
               return res.status(401).json("Unauthorized");
             }
         
-            // Store user ID in the session
+            const token = jwt.sign(
+                {email: email},
+                process.env.JWT
+            );
             
-            // req.session.userId = result.id;
-            
-            return res.status(200).json("Success")
+            return res.status(200).json({token})
           } 
           else {  
             return res.status(401).json("Unauthorized");
@@ -107,7 +108,7 @@ app.post('/login', (req,res)=>{
     });
 })
 
-app.get('/balance', (req, res) => {
+app.post('/balance', (req, res) => {
     const {email} = req.body; 
     const token = req.query.access_token
 
@@ -177,6 +178,28 @@ app.post("/add-history", (req, res) => {
                 }
                 else{
                     return res.status(200).json("Success");
+                }
+            });
+        }
+        else{
+            return res.status(401).json("Unauthorized");
+        }
+    })
+})
+
+app.post('/feedback', (req, res) => {
+    const {email, feedback} = req.body;
+    const token = req.query.access_token
+
+    verify_token(token, email, (call_result) => {
+        if(call_result){
+            const sql= "UPDATE ci_users SET feedback = ? WHERE email = ?;";
+            db.query(sql, [feedback, email], (err, result) => {
+                if (err) {
+                    return res.status(500).json({ error: 'Internal Server Error' });
+                }
+                else{
+                    return res.status(200).json(result);
                 }
             });
         }

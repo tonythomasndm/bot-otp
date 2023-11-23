@@ -3,6 +3,8 @@ import {servers,services } from "../constants";
 import serverIcon from "../assets/icons/server-icon.svg";
 import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
+import { useContext } from 'react';
+import { UserContext } from "../components/UserContext"
 
 
 
@@ -15,11 +17,13 @@ const BuyNumber = () => {
   const [selectedService, setSelectedService] = useState('');
   const [serverEndpoint,setServerEndpoint]  = useState("");
   const [numberId, setNumberId] = useState(null);
-  const [phantomToken, setPhantomToken]= useState(null)
+  const {user, setUser} = useContext(UserContext);
+  const [price,setPrice] =useState(null)
+  
 
 
   const handleServerClick = async (server) => {
-    // setSelectedServer(server.value);
+    setSelectedServer(server.value);
     console.log(server);
     console.log(server.apiEndpoint);
     
@@ -44,8 +48,9 @@ const BuyNumber = () => {
     }
   };
 
-  const handleServiceClick = (serviceCode) => {
+  const handleServiceClick = (serviceCode,Price) => {
     setSelectedService(serviceCode);
+    setPrice(Price);
     // Store the service code in the state or perform any additional actions as needed
     // For now, let's just log the service code
     console.log('Selected Service Code:', serviceCode);
@@ -57,7 +62,7 @@ const BuyNumber = () => {
     var apiEndpoint='';
 
     
-    apiEndpoint = `${serverEndpoint}&action=getNumber&service=${selectedService}&country=22`;
+      apiEndpoint = `${serverEndpoint}&action=getNumber&service=${selectedService}&country=22`;
     
 
     
@@ -69,13 +74,7 @@ const BuyNumber = () => {
       var extractedNumberId = "";
       var extractedPhoneNumber = "";
 
-      if (selectedServer===3){
-        const parsedData = JSON.parse(data);
-        [extractedNumberId, extractedPhoneNumber] = [parsedData.data.phoneNumber[0].serialNumber,parsedData.data.phoneNumber[0].number]
-        console.log(extractedNumberId);
-        console.log(extractedPhoneNumber);
-        
-      }
+      
   
       // Extract parts from the response
       [extractedNumberId, extractedPhoneNumber] = data.split(':').slice(1)
@@ -181,6 +180,15 @@ const BuyNumber = () => {
     setMessage('Processing next SMS');
   };
 
+  const requestData = {
+    email: user.email, 
+    service: selectedService, 
+    price: price, 
+    number: phoneNumber,
+    status: 'success', 
+    code_sms: message, 
+  };
+
   return (
     <section className="flex flex-row pt-24">
       <Sidebar/>
@@ -213,7 +221,7 @@ const BuyNumber = () => {
                 className={`flex flex-row items-center justify-start w-full gap-5 py-4 mx-2 max-w-[400px] my-4 text-lg font-semibold leading-none tracking-wider ${
                   selectedService === service.id ? 'bg-blue-500 text-white' : 'bg-blue-100 hover:bg-blue-500 hover:text-white'
                 } px-7 rounded-xl `}
-                onClick={() => handleServiceClick(service.servicecode)}
+                onClick={() => handleServiceClick(service.servicecode,service.price)}
               >
                 <span>{service.id}.</span>
                 {/* Display service-specific data */}
