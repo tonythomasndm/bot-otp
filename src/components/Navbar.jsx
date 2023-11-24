@@ -31,7 +31,7 @@ useEffect(() => {
       const res = await axios.post(`http://localhost:8081/balance?access_token=${Cookies.get("serv_auth")}`, values)
 
       if(res.status === 200){
-        setUser({loggedIn: true, email: Cookies.get("auth"), balance: res.data.balance })
+        setUser({loggedIn: true, email: Cookies.get("auth"), balance: res.data.balance, name: res.data.name })
       }
       else{
         navigate('/login')

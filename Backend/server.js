@@ -114,7 +114,7 @@ app.post('/balance', (req, res) => {
 
     verify_token(token, email, (call_result)=>{
         if(call_result){
-            const sql = "SELECT balance FROM ci_users WHERE email = ?";
+            const sql = "SELECT balance, Name FROM ci_users WHERE email = ?";
             db.query(sql, [email], (err, result) => {
                 if (err) {
                     return res.status(500).json({ error: 'Internal Server Error' });
@@ -123,7 +123,7 @@ app.post('/balance', (req, res) => {
                     return res.status(404).json({ error: 'User not found' });
                 }
                 const balance = result[0].balance;
-                return res.status(200).json({ balance });
+                return res.status(200).json({ balance, name: result[0].Name });
             });
         }
         else{
@@ -166,20 +166,41 @@ app.post("/add-history", (req, res) => {
 
     verify_token(token, email, (call_result) => {
         if(call_result){
-            const options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
-            const currentDate = new Date().toLocaleString('en-IN', options).split('/').reverse().join('-');
-            
-            const sql= "INSERT INTO ci_number_history (`email`,`service`,`price`, `number`, `status`, `code`, `date`) VALUES (?, ?, ?, ?, ?, ?, ?) ";
-
-            db.query(sql, [email, service, price, number, status, code_sms, currentDate], (err, result) => {
+            db.query(`UPDATE ci_users SET balance = balance - ${price} WHERE email = ?; `, [email], (err, result) => {
                 if (err) {
                     console.log(err);
                     return res.status(500).json({ error: 'Internal Server Error' });
                 }
                 else{
-                    return res.status(200).json("Success");
+                    db.query(`SELECT balance from ci_users WHERE email = ?; `, [email], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).json({ error: 'Internal Server Error' });
+                        }
+                        else{
+                            const final_balace = result[0].balance;
+
+
+                            const options = { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' };
+                            const currentDate = new Date().toLocaleString('en-IN', options).split('/').reverse().join('-');
+                            
+                            const sql= "INSERT INTO ci_number_history (`email`,`service`,`price`, `number`, `status`, `code`, `date`) VALUES (?, ?, ?, ?, ?, ?, ?) ";
+
+                            db.query(sql, [email, service, price, number, status, code_sms, currentDate], (err, result) => {
+                                if (err) {
+                                    console.log(err);
+                                    return res.status(500).json({ error: 'Internal Server Error' });
+                                }
+                                else{
+                                    return res.status(200).json({balance: final_balace});
+                                }
+                            });
+                        }
+                    })
                 }
             });
+
+            
         }
         else{
             return res.status(401).json("Unauthorized");
@@ -205,8 +226,8 @@ app.post('/feedback', (req, res) => {
         }
         else{
             return res.status(401).json("Unauthorized");
-        }
-    })
+   }
+})
 })
 
 app.get("/get-history", (req, res) => {
@@ -294,19 +315,19 @@ app.get('/', (req, res) => {
 //     })
 // })
 
-// app.get('/get_user', (req, res) => {
-//     const {email} = req.body;
-//     const sql = "SELECT * from ci_users WHERE email = ?";
-//     db.query(sql, [email], (err, result) => {
-//         if (err) {
-//             return res.status(500).json({ error: 'Internal Server Error' });
-//         }
-//         if (result.length === 0) {
-//             return res.status(404).json({ error: 'User not found' });
-//         }
-//         return res.status(200).json(result);
-//     });
-// })
+app.get('/get_user', (req, res) => {
+    const {email} = req.body;
+    const sql = "SELECT * from ci_users WHERE email = ?";
+    db.query(sql, [email], (err, result) => {
+        if (err) {
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        return res.status(200).json(result);
+    });
+})
 
 app.listen(PORT, ()=>{
     console.log(`listening on port ${PORT}`)

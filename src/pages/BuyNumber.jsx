@@ -19,7 +19,7 @@ const BuyNumber = () => {
   const [numberId, setNumberId] = useState(null);
   const {user, setUser} = useContext(UserContext);
   const [price,setPrice] =useState(null)
-  
+  const [sms, Setsms] = useState(undefined);
 
 
   const handleServerClick = async (server) => {
@@ -49,23 +49,22 @@ const BuyNumber = () => {
   };
 
   const handleServiceClick = (serviceCode,Price) => {
-    setSelectedService(serviceCode);
-    setPrice(Price);
-    // Store the service code in the state or perform any additional actions as needed
-    // For now, let's just log the service code
-    console.log('Selected Service Code:', serviceCode);
+    if(parseFloat(user.balance) > parseFloat(Price)){
+      setSelectedService(serviceCode);
+      setPrice(Price);
+
+      console.log('Selected Service Code:', serviceCode);
+    }
+    else{
+      alert("Balance is LOW")
+    }
+    
   };
 
   const getNumber = async() => {
-    console.log('Helo');
     console.log(serverEndpoint);
     var apiEndpoint='';
-
-    
       apiEndpoint = `${serverEndpoint}&action=getNumber&service=${selectedService}&country=22`;
-    
-
-    
     console.log({apiEndpoint});
     try {
       // Make an API call to get the number
@@ -73,8 +72,6 @@ const BuyNumber = () => {
       const data = await response.text(); // Assume the response is text
       var extractedNumberId = "";
       var extractedPhoneNumber = "";
-
-      
   
       // Extract parts from the response
       [extractedNumberId, extractedPhoneNumber] = data.split(':').slice(1)
@@ -99,8 +96,35 @@ const BuyNumber = () => {
    if (numberId !==null){
       getStatus(serverEndpoint,numberId);
    }
+
    
-}, [numberId]);
+
+  const fun = async() => {
+    if(sms != undefined){
+      const requestData = {
+        email: user.email, 
+        service: selectedService, 
+        price: price, 
+        number: phoneNumber,
+        status: 'success', 
+        code_sms: sms, 
+      };
+
+      const res = await axios.post(`http://localhost:8081/add-history?access_token=${Cookies.get("serv_auth")}`, requestData)
+      if(res.status === 200){
+        user.balance = res.data.balance;
+        setUser(user)
+        console.log("Successfully added history");
+      }
+      else{
+        console.log("Internal Server Error");
+      }
+    } 
+  }
+
+  fun()
+   
+}, [numberId, sms]);
   
   
   const getStatus = async (serverEndpoint, numberId) => {
@@ -119,6 +143,7 @@ const BuyNumber = () => {
 
           data = data.split(":")[1]
           setMessage(data);
+          Setsms(data);
           clearTimeout();
       }
       setMessage(data);      
@@ -175,8 +200,6 @@ const BuyNumber = () => {
       console.error('Error processing next SMS:', error);
     }
 
-    // Additional logic if needed after processing next SMS
-    // For example, updating state, triggering additional actions, etc.
     setMessage('Processing next SMS');
   };
 
@@ -187,7 +210,6 @@ const BuyNumber = () => {
     number: phoneNumber,
     status: 'success', 
     code_sms: message, 
-    id: numberId,
   };
 
   return (
