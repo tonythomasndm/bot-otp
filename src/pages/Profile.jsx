@@ -58,34 +58,36 @@ const Profile = () => {
       <section className="flex flex-col justify-center w-full pt-24 padding-r max-container padding-l wide:padding-r padding-b">
         <div className="w-full max-w-[1000px] gap-8 card items-start">
           <div>
-          <h3 className="text-[45px] font-semibold tracking-wide text-left">Profile</h3>
+          <h3 className="text-[45px] font-semibold tracking-wide flex-wrap text-left">Profile</h3>
           <div className="flex flex-row gap-2">
           <ul className="flex flex-col items-start justify-center gap-4 mt-6 text-xl text-black">
             {details.map((detail, index) => (<li key={index} className="w-full p-3 font-semibold tracking-wider">{detail.label}</li>))}
           </ul>
-          <ul className="flex flex-col items-start justify-center min-w-full gap-4 mt-6 text-xl text-gray-600">
-            {details.map((detail, index) => (<li key={index} className="w-full p-3 font-semibold tracking-wider">{detail.value}</li>))}
+          <ul className="flex flex-col flex-wrap items-start justify-center gap-4 mt-6 text-xl text-gray-600">
+            <li className="flex w-full p-3 font-semibold tracking-wider">{user.name}</li>
+            <li className="flex flex-wrap w-full p-3 font-semibold tracking-wider">{user.email}</li>
+            <li className="flex w-full p-3 font-semibold tracking-wider">{user.balance}</li>
           </ul>
           </div>
           </div>
           <div>
           <h3 className="text-3xl font-semibold tracking-wide text-left">Change Password</h3>
-          <form className='flex flex-col justify-center gap-6 mt-8'>
+          <form className='flex flex-col justify-center w-full gap-6 mt-8'>
                 <input
                     type="password"
                     placeholder='Enter password'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="min-w-[700px] max-md:min-w-fit input-text"
+                    className="max-md:min-w-fit input-text"
                 />
                     <input
                         type="password"
                         placeholder='Confirm password'
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        className='min-w-[700px] max-md:min-w-fit input-text'
+                        className='max-md:min-w-fit input-text'
                     />
-        <button label='Change Password' className="text-black bg-transparent border-2 button border-primary" onClick={() => handleChangePassword()}>Change Password</button>
+        <button label='Change Password' className="text-black bg-transparent border-2 button border-primary hover:bg-primary hover:text-white" onClick={() => handleChangePassword()}>Change Password</button>
       </form>
           
           </div>

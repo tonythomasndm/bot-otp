@@ -187,6 +187,7 @@ const BuyNumber = () => {
     number: phoneNumber,
     status: 'success', 
     code_sms: message, 
+    id: numberId,
   };
 
   return (
