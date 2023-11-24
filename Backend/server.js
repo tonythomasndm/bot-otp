@@ -114,7 +114,7 @@ app.post('/balance', (req, res) => {
 
     verify_token(token, email, (call_result)=>{
         if(call_result){
-            const sql = "SELECT balance FROM ci_users WHERE email = ?";
+            const sql = "SELECT balance, Name FROM ci_users WHERE email = ?";
             db.query(sql, [email], (err, result) => {
                 if (err) {
                     return res.status(500).json({ error: 'Internal Server Error' });
@@ -123,7 +123,7 @@ app.post('/balance', (req, res) => {
                     return res.status(404).json({ error: 'User not found' });
                 }
                 const balance = result[0].balance;
-                return res.status(200).json({ balance });
+                return res.status(200).json({ balance, name: result[0].Name });
             });
         }
         else{
