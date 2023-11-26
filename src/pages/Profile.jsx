@@ -6,6 +6,7 @@ import { list } from "postcss";
 import Cookies from "js-cookie";
 import { useContext } from 'react';
 import { UserContext } from "../components/UserContext"
+import BASE_URL from "src/constants/helper.js"
 
 const Profile = () => {
 
@@ -28,7 +29,7 @@ const Profile = () => {
       return;
     }
 
-      const response = await fetch(`http://localhost:8081/change-pass?access_token=${Cookies.get("serv_auth")}`, {
+      const response = await fetch(`${BASE_URL}/change-pass?access_token=${Cookies.get("serv_auth")}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

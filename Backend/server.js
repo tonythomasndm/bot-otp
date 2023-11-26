@@ -36,7 +36,7 @@ const db = mysql.createPool({
 //     }
 // })
 
-const PORT = 8081;
+const PORT = process.env.PORT;
 
 const verify_token = (token, email, callback) => {
     if(token === undefined){

@@ -23,8 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 .env
+/node_modules
 
 # Composer
 /vendor/
 composer.phar
 composer.lock
+
+/Backend/.env
